@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:techtag/app/values/app_colors.dart';
+import 'package:techtag/app/values/app_strings.dart';
 
 import '../controllers/splash_controller.dart';
 
@@ -24,7 +25,7 @@ class SplashView extends GetView<SplashController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                "TechTag",
+                AppStrings.techTag,
                 style: TextStyle(
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
