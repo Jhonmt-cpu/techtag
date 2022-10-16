@@ -25,4 +25,6 @@ class AppColors {
   static const Color titlesTextPurple = Color(0xFFFFFFFF);
   static const Color baseTitlePurple = Color(0xFFD4C2FF);
   static const Color complementsTextPurple = Color(0xFFA380F6);
+
+  static const Color transparent = Colors.transparent;
 }
