@@ -15,7 +15,7 @@ class AppStrings {
   static const String labelFullName = "Nome Completo";
   static const String labelPhone = "Phone";
   static const String labelBirthDate = "Data Nascimento";
-  static const String labelCpf = "Cpf";
+  static const String labelCpf = "CPF";
   static const String next = "Próximo";
 
   static const String errorName = 'Digite seu nome completo';
