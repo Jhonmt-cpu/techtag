@@ -30,44 +30,65 @@ class RegisterFirstPage extends GetView<RegisterController> {
         const SizedBox(
           height: 24,
         ),
-        ComplexTextInput(
-          labelText: AppStrings.labelFullName,
-          roundBordersTop: true,
-          inputFormatters: [
-            FilteringTextInputFormatter(
-              RegExp(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9'\s]"),
-              allow: true,
-            ),
-            FilteringTextInputFormatter.singleLineFormatter,
-          ],
-          textInputAction: TextInputAction.next,
+        Obx(
+          () => ComplexTextInput(
+            labelText: AppStrings.labelFullName,
+            roundBordersTop: true,
+            errorText: controller.nameError.value,
+            textEditingController: controller.nameController,
+            inputFormatters: [
+              FilteringTextInputFormatter(
+                RegExp(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9'\s]"),
+                allow: true,
+              ),
+              FilteringTextInputFormatter.singleLineFormatter,
+            ],
+            textInputAction: TextInputAction.next,
+            onChanged: (text) => controller.checkName(text),
+          ),
         ),
-        ComplexTextInput(
-          labelText: AppStrings.labelPhone,
-          textInputAction: TextInputAction.next,
-          inputFormatters: [
-            MobilePhoneNumberInputFormatter(),
-            FilteringTextInputFormatter.singleLineFormatter
-          ],
+        Obx(
+          () => ComplexTextInput(
+            labelText: AppStrings.labelPhone,
+            textEditingController: controller.phoneNumberController,
+            errorText: controller.phoneError.value,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            inputFormatters: [
+              MobilePhoneNumberInputFormatter(),
+              FilteringTextInputFormatter.singleLineFormatter
+            ],
+            onChanged: (text) => controller.checkPhoneNumber(text),
+          ),
         ),
-        ComplexTextInput(
-          labelText: AppStrings.labelBirthDate,
-          textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            DateInputFormatter(),
-            FilteringTextInputFormatter.singleLineFormatter,
-          ],
+        Obx(
+          () => ComplexTextInput(
+            labelText: AppStrings.labelBirthDate,
+            textInputAction: TextInputAction.next,
+            errorText: controller.birthDayError.value,
+            textEditingController: controller.birthDayController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              DateInputFormatter(),
+              FilteringTextInputFormatter.singleLineFormatter,
+            ],
+            onChanged: (text) => controller.checkBirthday(text),
+          ),
         ),
-        ComplexTextInput(
-          labelText: AppStrings.labelCpf,
-          roundBordersBottom: true,
-          textInputAction: TextInputAction.done,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            CpfInputFormatter(),
-            FilteringTextInputFormatter.singleLineFormatter,
-          ],
+        Obx(
+          () => ComplexTextInput(
+            labelText: AppStrings.labelCpf,
+            textEditingController: controller.cpfController,
+            errorText: controller.cpfError.value,
+            roundBordersBottom: true,
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              CpfInputFormatter(),
+              FilteringTextInputFormatter.singleLineFormatter,
+            ],
+            onChanged: (text) => controller.checkCpf(text),
+          ),
         ),
         const SizedBox(
           height: 40,
@@ -76,9 +97,7 @@ class RegisterFirstPage extends GetView<RegisterController> {
           enable: true,
           backgroundColor: AppColors.purple,
           text: AppStrings.next,
-          onTap: () {
-            controller.pageIndex.value = 1;
-          },
+          onTap: () => controller.goToSecondPage(),
         ),
       ],
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -68,6 +67,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 ComplexTextInput(
                   labelText: AppStrings.labelEmail,
+                  errorText: "Teste Error",
                   roundBordersTop: true,
                   keyboardType: TextInputType.emailAddress,
                   inputFormatters: [

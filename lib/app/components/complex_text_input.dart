@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:techtag/app/values/app_colors.dart';
 import 'package:techtag/app/values/app_strings.dart';
 
@@ -63,22 +62,36 @@ class ComplexTextInput extends StatefulWidget {
 class _ComplexTextInputState extends State<ComplexTextInput> {
   bool isFocused = false;
 
+  late FocusNode myFocusNode;
+
   @override
-  Widget build(BuildContext context) {
-    widget.focusNode ??= FocusNode();
+  void initState() {
+    super.initState();
 
-    widget.focusNode?.addListener(
+    if (widget.focusNode != null) {
+      myFocusNode = widget.focusNode!;
+    } else {
+      myFocusNode = FocusNode();
+    }
+
+    myFocusNode.addListener(
       () {
-        if (widget.focusNode?.hasFocus ?? false) {
-          widget.focusNode?.requestFocus();
-        }
-
         setState(() {
           isFocused = widget.focusNode?.hasFocus ?? false;
         });
       },
     );
+  }
 
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: widget.backgroundColor,
@@ -99,7 +112,11 @@ class _ComplexTextInputState extends State<ComplexTextInput> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: isFocused ? AppColors.purple : AppColors.transparent,
+              color: widget.errorText != null && (widget.errorText?.isNotEmpty ?? false)
+                  ? AppColors.delete
+                  : isFocused
+                      ? AppColors.purple
+                      : AppColors.transparent,
               borderRadius: BorderRadius.circular(5),
             ),
             width: 2,
@@ -116,14 +133,32 @@ class _ComplexTextInputState extends State<ComplexTextInput> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.labelText,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.inputs,
-                      height: 20 / 10,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.labelText,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.inputs,
+                          height: 20 / 10,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 3,
+                      ),
+                      widget.errorText != null && (widget.errorText?.isNotEmpty ?? false)
+                          ? Text(
+                              widget.errorText!,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.delete,
+                                height: 20 / 10,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
                   ),
                   TextField(
                     cursorColor: AppColors.base,
