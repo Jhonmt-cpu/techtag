@@ -1,16 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:techtag/app/components/dissmiss_keyboard.dart';
+import 'package:techtag/app/data/model/user_model.dart';
 import 'package:techtag/app/values/app_colors.dart';
 import 'package:techtag/app/values/app_strings.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) async {
+    Directory directory = await path_provider.getApplicationDocumentsDirectory();
+    Hive.init(directory.path);
+    Hive.registerAdapter(UserModelAdapter());
+
     var mySystemTheme = const SystemUiOverlayStyle().copyWith(
       systemNavigationBarColor: AppColors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -39,8 +49,8 @@ class TechTag extends StatelessWidget {
         theme: ThemeData(
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: AppColors.base,
-            selectionColor: AppColors.base,
-            selectionHandleColor: AppColors.base,
+            selectionColor: AppColors.background,
+            selectionHandleColor: AppColors.background,
           ),
         ),
         initialRoute: AppPages.INITIAL,

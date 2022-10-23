@@ -1,3 +1,4 @@
+import 'package:techtag/app/data/model/user_model.dart';
 import 'package:techtag/app/data/provider/api.dart';
 
 class UsersRepository {
@@ -28,5 +29,19 @@ class UsersRepository {
     );
 
     return response;
+  }
+
+  Future<UserModel> login({
+    required String email,
+    required String password,
+  }) async {
+    var response = await api.login(
+      email: email,
+      password: password,
+    );
+
+    var userModel = UserModel.fromMap(response);
+
+    return userModel;
   }
 }

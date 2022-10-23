@@ -156,7 +156,7 @@ class RegisterController extends GetxController {
 
         var dateConverted = birthDayController.text.split('/').reversed.join('-');
 
-        var response = await _usersRepository.createUser(
+        await _usersRepository.createUser(
           name: nameController.text,
           email: emailController.text,
           password: passwordController.text,
@@ -164,8 +164,6 @@ class RegisterController extends GetxController {
           cpf: cpf,
           phone: phoneNumbers,
         );
-
-        print(response);
 
         Get.offAllNamed(Routes.LOGIN);
       } on DioError catch (error) {
