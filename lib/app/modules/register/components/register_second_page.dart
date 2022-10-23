@@ -34,23 +34,31 @@ class RegisterSecondPage extends GetView<RegisterController> {
         const SizedBox(
           height: 24,
         ),
-        ComplexTextInput(
-          labelText: AppStrings.labelEmail,
-          roundBordersTop: true,
-          keyboardType: TextInputType.emailAddress,
-          inputFormatters: [
-            FilteringTextInputFormatter(RegExp('[a-z0-9@.+_-]'), allow: true),
-            FilteringTextInputFormatter.singleLineFormatter,
-          ],
+        Obx(
+          () => ComplexTextInput(
+            labelText: AppStrings.labelEmail,
+            roundBordersTop: true,
+            textEditingController: controller.emailController,
+            keyboardType: TextInputType.emailAddress,
+            errorText: controller.emailError.value,
+            inputFormatters: [
+              FilteringTextInputFormatter(RegExp('[a-z0-9@.+_-]'), allow: true),
+              FilteringTextInputFormatter.singleLineFormatter,
+            ],
+            onChanged: (text) => controller.checkEmail(text),
+          ),
         ),
         Obx(
           () => ComplexTextInput(
             labelText: AppStrings.labelPassword,
             roundBordersBottom: true,
+            errorText: controller.passwordError.value,
+            textEditingController: controller.passwordController,
             obscureButtonValue: controller.obscurePassword.value,
             onTapObscureButton: () {
               controller.obscurePassword(!controller.obscurePassword.value);
             },
+            onChanged: (text) => controller.checkPasswordError(text),
           ),
         ),
         const SizedBox(
@@ -60,9 +68,7 @@ class RegisterSecondPage extends GetView<RegisterController> {
           enable: true,
           backgroundColor: AppColors.green,
           text: AppStrings.completeRegistration,
-          onTap: () {
-            controller.pageIndex.value = 0;
-          },
+          onTap: () => controller.register(),
         ),
       ],
     );

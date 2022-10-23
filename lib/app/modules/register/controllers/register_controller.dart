@@ -1,5 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:techtag/app/components/message_dialog.dart';
+import 'package:techtag/app/data/repositories/users_repository.dart';
+import 'package:techtag/app/routes/app_pages.dart';
 import 'package:techtag/app/values/app_strings.dart';
 
 class RegisterController extends GetxController {
@@ -18,10 +22,15 @@ class RegisterController extends GetxController {
   RxString emailError = "".obs;
   RxString passwordError = "".obs;
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   String cpf = "";
 
   RxBool obscurePassword = true.obs;
+
+  RxBool isLoading = false.obs;
+
+  final _usersRepository = UsersRepository();
 
   void checkName(String? text) {
     if (text != null) {
@@ -127,6 +136,61 @@ class RegisterController extends GetxController {
       }
     } else {
       passwordError.value = AppStrings.errorEmptyPassword;
+    }
+  }
+
+  Future<void> register() async {
+    emailError.value = passwordError.value = '';
+
+    checkEmail(emailController.text);
+    checkPasswordError(passwordController.text);
+
+    if (emailError.value == "" && passwordError.value == "") {
+      try {
+        isLoading.value = true;
+
+        var phoneNumbers = phoneNumberController.text.replaceAll(
+          RegExp(AppStrings.reNotNumber),
+          '',
+        );
+
+        var dateConverted = birthDayController.text.split('/').reversed.join('-');
+
+        await _usersRepository.createUser(
+          name: nameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+          birthDate: dateConverted,
+          cpf: cpf,
+          phone: phoneNumbers,
+        );
+
+        Get.offAllNamed(Routes.LOGIN);
+      } on DioError catch (error) {
+        String? message = error.response?.data["message"];
+
+        if (message != null) {
+          Get.dialog(
+            MessageDialog(
+              message: message,
+            ),
+          );
+        } else {
+          Get.dialog(
+            const MessageDialog(
+              message: "Opps, Algo deu errado no seu cadastro!",
+            ),
+          );
+        }
+      } catch (e) {
+        Get.dialog(
+          const MessageDialog(
+            message: "Opps, Algo deu errado no seu cadastro!",
+          ),
+        );
+      } finally {
+        isLoading.value = false;
+      }
     }
   }
 }
