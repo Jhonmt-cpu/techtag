@@ -35,12 +35,16 @@ class UsersRepository {
     required String email,
     required String password,
   }) async {
-    var response = await api.login(
+    var responseLogin = await api.login(
       email: email,
       password: password,
     );
 
-    var userModel = UserModel.fromMap(response);
+    var account = await api.getUser();
+
+    var userModel = UserModel.fromMap(account);
+
+    userModel.token = responseLogin['token'];
 
     return userModel;
   }

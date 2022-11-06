@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
+
 import 'package:techtag/app/values/boxes.dart';
 
 part 'user_model.g.dart';
@@ -10,20 +11,30 @@ part 'user_model.g.dart';
 class UserModel {
   @HiveField(0)
   String token;
+  @HiveField(1)
+  String id;
+  @HiveField(2)
+  String name;
 
   UserModel({
     required this.token,
+    required this.id,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'token': token,
+      'id': id,
+      'name': name,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      token: map['token'] as String,
+      token: '',
+      id: map['id'] as String,
+      name: map['name'] as String,
     );
   }
 

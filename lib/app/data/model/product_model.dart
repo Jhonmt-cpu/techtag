@@ -2,14 +2,28 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
+import 'package:techtag/app/values/boxes.dart';
 
+part 'product_model.g.dart';
+
+@HiveType(typeId: ModelIds.kart)
 class ProductModel {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   Uint8List image;
+  @HiveField(2)
   String name;
+  @HiveField(3)
   bool isAvailable;
+  @HiveField(4)
   double value;
-  List<ProductCategory> productCategories;
+  @HiveField(5)
+  int cartQuantity;
+  @HiveField(6)
+  int quantity;
+  List<ProductCategory>? productCategories;
 
   ProductModel({
     required this.id,
@@ -17,7 +31,9 @@ class ProductModel {
     required this.name,
     required this.isAvailable,
     required this.value,
-    required this.productCategories,
+    required this.cartQuantity,
+    required this.quantity,
+    this.productCategories,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,7 +43,15 @@ class ProductModel {
       'name': name,
       'isAvailable': isAvailable,
       'value': value,
-      'productCategories': productCategories.map((x) => x.toMap()).toList(),
+      'productCategories': productCategories?.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  Map<String, dynamic> toOrderProductMap() {
+    return <String, dynamic>{
+      'id': id,
+      'value': value,
+      'quantity': cartQuantity,
     };
   }
 
@@ -40,11 +64,15 @@ class ProductModel {
       name: map['name'] as String,
       isAvailable: map['isAvailable'] as bool,
       value: double.parse(map['value'] as String),
-      productCategories: List<ProductCategory>.from(
-        (map['CategoriesOnProducts'] as List<dynamic>).map<ProductCategory>(
-          (x) => ProductCategory.fromMap(x['category'] as Map<String, dynamic>),
-        ),
-      ),
+      cartQuantity: 0,
+      quantity: map['quantity'] as int,
+      productCategories: map['CategoriesOnProducts'] != null
+          ? List<ProductCategory>.from(
+              (map['CategoriesOnProducts'] as List<dynamic>).map<ProductCategory>(
+                (x) => ProductCategory.fromMap(x['category'] as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
 
