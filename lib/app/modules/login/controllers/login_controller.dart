@@ -39,7 +39,7 @@ class LoginController extends GetxController {
     if (text != null) {
       if (text.isEmpty) {
         passwordError.value = AppStrings.errorEmptyPassword;
-      } else if (text.length < 6) {
+      } else if (text.length < 3) {
         passwordError.value = AppStrings.errorPasswordTooShort;
       } else {
         passwordError.value = '';

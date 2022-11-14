@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:techtag/app/components/dissmiss_keyboard.dart';
+import 'package:techtag/app/data/model/credit_card_model.dart';
+import 'package:techtag/app/data/model/product_model.dart';
 import 'package:techtag/app/data/model/user_model.dart';
 import 'package:techtag/app/values/app_colors.dart';
 import 'package:techtag/app/values/app_strings.dart';
@@ -20,18 +22,18 @@ void main() async {
     Directory directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(ProductModelAdapter());
+    Hive.registerAdapter(CreditCardModelAdapter());
 
     var mySystemTheme = const SystemUiOverlayStyle().copyWith(
-      systemNavigationBarColor: AppColors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
       statusBarColor: AppColors.transparent,
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
     );
     SystemChrome.setSystemUIOverlayStyle(mySystemTheme);
 
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
-      overlays: [SystemUiOverlay.top],
+      overlays: [SystemUiOverlay.bottom],
     );
     runApp(const TechTag());
   });

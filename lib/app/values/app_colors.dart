@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color anotherPurple = Color(0xFF9871F5);
-  static const Color purple = Color(0xFF8257E5);
-  static const Color littlePurple = Color(0xFF774DD6);
-  static const Color darkPurple = Color(0xFF6842C2);
+  static const Color anotherPurple = Color.fromARGB(255, 131, 221, 236);
+  static const Color purple = Color(0xFF67d6e9);
+  static const Color littlePurple = Color.fromARGB(255, 2, 183, 215);
+  static const Color darkPurple = Color.fromARGB(255, 41, 134, 192);
   static const Color green = Color(0xFF04D361);
   static const Color anotherGreen = Color(0xFF24EF7F);
   static const Color delete = Color(0xFFE33D3D);
@@ -23,8 +23,12 @@ class AppColors {
   static const Color inputs = Color(0xFFC1BCCC);
 
   static const Color titlesTextPurple = Color(0xFFFFFFFF);
-  static const Color baseTitlePurple = Color(0xFFD4C2FF);
+  static const Color baseTitlePurple = Color.fromARGB(255, 155, 230, 243);
   static const Color complementsTextPurple = Color(0xFFA380F6);
+
+  static const Color visaCard = Color(0xFF7AA0DA);
+  static const Color masterCard = Color(0xFFEB7777);
+  static const Color eloCard = Color.fromARGB(255, 122, 218, 188);
 
   static const Color transparent = Colors.transparent;
 }

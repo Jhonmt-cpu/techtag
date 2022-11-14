@@ -62,7 +62,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       const Expanded(child: SizedBox()),
                       InkWell(
-                        onTap: () {},
+                        onTap: () => controller.goToCart(),
                         child: Container(
                           height: 40,
                           width: 40,
@@ -101,7 +101,7 @@ class HomeView extends GetView<HomeController> {
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
                           imageUrl:
-                              "https://www.e-retail.com/wp-content/uploads/2021/12/razer-banner.jpg",
+                              "https://img.freepik.com/vetores-premium/modelo-de-farmacia-de-banner-medica-vetorial-para-hospitais-farmacias-de-publicidade-treinamento-internacional_497982-272.jpg?w=2000",
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -116,7 +116,7 @@ class HomeView extends GetView<HomeController> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Categorias 🖥",
+                      "Categorias 💊",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class HomeView extends GetView<HomeController> {
                 Obx(
                   () => GridView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 16,
@@ -193,6 +193,7 @@ class HomeView extends GetView<HomeController> {
                         name: controller.productsList[index].name,
                         image: controller.productsList[index].image,
                         value: controller.productsList[index].value,
+                        addToKart: () => controller.addProduct(controller.productsList[index]),
                       );
                     },
                   ),

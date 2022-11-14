@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:techtag/app/modules/global/global_controller.dart';
 
 import '../controllers/splash_controller.dart';
 
@@ -7,6 +8,10 @@ class SplashBinding extends Bindings {
   void dependencies() {
     Get.put<SplashController>(
       SplashController(),
+    );
+
+    Get.put<GlobalController>(
+      GlobalController(),
     );
   }
 }

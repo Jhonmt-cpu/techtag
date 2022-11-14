@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
+import 'package:techtag/app/data/model/credit_card_model.dart';
+import 'package:techtag/app/data/model/product_model.dart';
 import 'package:techtag/app/data/model/user_model.dart';
+import 'package:techtag/app/values/app_strings.dart';
 import 'package:techtag/app/values/boxes.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class Api {
   late Dio dioClient;
@@ -14,7 +19,7 @@ class Api {
 
     dioClient = Dio(
       BaseOptions(
-        baseUrl: "https://tech-tag.herokuapp.com",
+        baseUrl: AppStrings.baseUrl,
       ),
     );
 
@@ -71,6 +76,14 @@ class Api {
     return response.data;
   }
 
+  Future<dynamic> getUser() async {
+    var response = await dioClient.get(
+      "/account",
+    );
+
+    return response.data;
+  }
+
   Future<List<dynamic>> getCategories() async {
     var response = await dioClient.get(
       "/categories",
@@ -85,5 +98,40 @@ class Api {
     );
 
     return response.data;
+  }
+
+  Future<Map<String, dynamic>> requestOrder({
+    required List<ProductModel> products,
+    required CreditCardModel creditCard,
+  }) async {
+    List<Map<String, dynamic>> orderProducts = products.map((e) => e.toOrderProductMap()).toList();
+
+    var response = await dioClient.post(
+      "/purchase",
+      data: {
+        "products": orderProducts,
+        "cardNumber": creditCard.cardNumber,
+        "cardName": creditCard.cardHolder,
+        "cardExpirationDate": creditCard.expireDate,
+        "type": "credit",
+      },
+    );
+
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> getOrder(String orderId) async {
+    var response = await dioClient.get(
+      "/order/$orderId",
+    );
+
+    return response.data;
+  }
+
+  Socket getOrderSocket() {
+    return io(
+      AppStrings.baseUrl,
+      OptionBuilder().setTransports(['websocket']).disableAutoConnect().build(),
+    );
   }
 }

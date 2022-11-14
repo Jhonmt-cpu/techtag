@@ -13,6 +13,8 @@ class ComplexTextInput extends StatefulWidget {
   final Color borderColor;
   final bool roundBordersTop;
   final bool roundBordersBottom;
+  final bool roundBorderBottomLeft;
+  final bool roundBorderBottomRight;
   final bool enabled;
   final bool readOnly;
   final TextInputType keyboardType;
@@ -51,6 +53,8 @@ class ComplexTextInput extends StatefulWidget {
     this.borderColor = AppColors.purple,
     this.roundBordersTop = false,
     this.roundBordersBottom = false,
+    this.roundBorderBottomLeft = false,
+    this.roundBorderBottomRight = false,
     this.backgroundColor = AppColors.titlesTextPurple,
   })  : assert(obscureButtonValue != null ? onTapObscureButton != null : true),
         super(key: key);
@@ -98,8 +102,10 @@ class _ComplexTextInputState extends State<ComplexTextInput> {
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(widget.roundBordersTop ? 8 : 0),
           topRight: Radius.circular(widget.roundBordersTop ? 8 : 0),
-          bottomLeft: Radius.circular(widget.roundBordersBottom ? 8 : 0),
-          bottomRight: Radius.circular(widget.roundBordersBottom ? 8 : 0),
+          bottomLeft:
+              Radius.circular(widget.roundBordersBottom || widget.roundBorderBottomLeft ? 8 : 0),
+          bottomRight:
+              Radius.circular(widget.roundBordersBottom || widget.roundBorderBottomRight ? 8 : 0),
         ),
         boxShadow: const [
           BoxShadow(
@@ -170,7 +176,7 @@ class _ComplexTextInputState extends State<ComplexTextInput> {
                     enabled: widget.enabled,
                     readOnly: widget.readOnly,
                     textCapitalization: widget.textCapitalization,
-                    obscureText: widget.obscureButtonValue ?? false,
+                    obscureText: widget.obscureText || (widget.obscureButtonValue ?? false),
                     decoration: const InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       contentPadding: EdgeInsets.all(0),
@@ -319,6 +325,80 @@ class DateInputFormatter extends TextInputFormatter {
       if (k == 4) {
         formatted += '/';
       }
+      formatted += numbersOnly[k];
+    }
+
+    int delta = formatted.length - oldLength;
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: selectionIndex + delta),
+    );
+  }
+}
+
+class MonthYearDateFormatter extends TextInputFormatter {
+  bool updating = false;
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    int selectionIndex = newValue.selection.end;
+    int oldLength = newValue.text.length;
+    String formatted = '';
+    String original = newValue.text;
+
+    String numbersOnly = original.replaceAll(RegExp(AppStrings.reNotNumber), '');
+    if (numbersOnly.length > 4) {
+      numbersOnly = numbersOnly.substring(0, 4);
+    }
+    int length = min(numbersOnly.length, 4);
+
+    for (int k = 0; k < length; k++) {
+      if (k == 2) {
+        formatted += '/';
+      }
+
+      formatted += numbersOnly[k];
+    }
+
+    int delta = formatted.length - oldLength;
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: selectionIndex + delta),
+    );
+  }
+}
+
+class CardNumberFormatter extends TextInputFormatter {
+  bool updating = false;
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    int selectionIndex = newValue.selection.end;
+    int oldLength = newValue.text.length;
+    String formatted = '';
+    String original = newValue.text;
+
+    String numbersOnly = original.replaceAll(RegExp(AppStrings.reNotNumber), '');
+    if (numbersOnly.length > 16) {
+      numbersOnly = numbersOnly.substring(0, 16);
+    }
+    int length = min(numbersOnly.length, 16);
+
+    for (int k = 0; k < length; k++) {
+      if (k == 4) {
+        formatted += ' ';
+      }
+
+      if (k == 8) {
+        formatted += ' ';
+      }
+
+      if (k == 12) {
+        formatted += ' ';
+      }
+
       formatted += numbersOnly[k];
     }
 

@@ -27,7 +27,7 @@ class LoginView extends GetView<LoginController> {
           body: ListView(
             children: [
               Container(
-                height: 379,
+                height: 250,
                 width: Get.width,
                 color: AppColors.purple,
                 child: SvgPicture.asset(

@@ -8,6 +8,7 @@ class ProductCard extends StatelessWidget {
   final String name;
   final Uint8List image;
   final double value;
+  final Function() addToKart;
 
   const ProductCard({
     Key? key,
@@ -15,12 +16,12 @@ class ProductCard extends StatelessWidget {
     required this.name,
     required this.image,
     required this.value,
+    required this.addToKart,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 163,
       decoration: BoxDecoration(
           color: AppColors.titlesTextPurple,
           borderRadius: BorderRadius.circular(8),
@@ -43,7 +44,7 @@ class ProductCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: Image.memory(
                   image,
-                  height: 88,
+                  height: 70,
                 ),
               ),
             ),
@@ -64,22 +65,28 @@ class ProductCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     color: AppColors.darkPurple,
                     fontWeight: FontWeight.w900,
+                    fontSize: 12,
                   ),
                 ),
                 const Expanded(child: SizedBox()),
-                Container(
-                  height: 36,
-                  width: 36,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(36),
-                    color: AppColors.green,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      "assets/icons/plus.svg",
+                InkWell(
+                  onTap: addToKart,
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(36),
+                      color: AppColors.green,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(
+                        "assets/icons/plus.svg",
+                        color: AppColors.shape01,
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             )
           ],
