@@ -44,4 +44,13 @@ class UsersRepository {
 
     return userModel;
   }
+
+  Future<void> forgot({
+    required String email,
+  }) async {
+    var response = await api.forgot(
+      email: email
+    );
+    return response;
+  }
 }

@@ -86,4 +86,15 @@ class Api {
 
     return response.data;
   }
+  Future<dynamic> forgot({
+    required String email,
+  }) async {
+    var response = await dioClient.post(
+      "/forgot-password",
+      data: {
+        "email": email,
+      }
+    );
+    return response;
+  }
 }

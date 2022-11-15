@@ -4,6 +4,8 @@ class AppStrings {
 
   //Login
   static const String login = "Fazer Login";
+  static const String forgot = "Esqueceu sua senha?";
+  static const String textForgot = "Não esquenta, vamos dar um jeito nisso.";
   static const String createAccount = "Criar uma conta";
   static const String labelEmail = "E-mail";
   static const String labelPassword = "Senha";

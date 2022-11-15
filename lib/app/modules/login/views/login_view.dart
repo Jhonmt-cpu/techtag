@@ -105,7 +105,7 @@ class LoginView extends GetView<LoginController> {
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: GestureDetector(
                           onTap: () {
-                            print("oie");
+                            Get.toNamed(Routes.FORGOT);
                           },
                           child: const Text(
                             AppStrings.forgotPassword,
